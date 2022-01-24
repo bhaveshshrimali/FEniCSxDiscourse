@@ -15,7 +15,7 @@ RUN adduser --disabled-password \
 WORKDIR ${HOME}
 COPY . ${HOME}
 RUN pip3 install --no-cache-dir jupyterhub notebook
-RUN pip3 install --upgrade numpy scipy matplotlib pandas
+RUN pip3 install --upgrade scipy matplotlib pandas
 USER root
 RUN chown -R ${NB_UID} ${HOME}
 USER ${NB_USER}
