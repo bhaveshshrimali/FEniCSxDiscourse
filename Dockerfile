@@ -16,6 +16,7 @@ WORKDIR ${HOME}
 COPY . ${HOME}
 RUN pip3 install --no-cache-dir jupyterhub notebook
 RUN pip3 install --upgrade scipy matplotlib pandas
+RUN pip3 install pyvista scikit-fem vedo
 USER root
 RUN chown -R ${NB_UID} ${HOME}
 USER ${NB_USER}
