@@ -14,9 +14,9 @@ RUN adduser --disabled-password \
 # Copy home directory for usage in binder
 WORKDIR ${HOME}
 COPY . ${HOME}
-RUN pip3 install --no-cache-dir jupyterhub notebook
+RUN pip3 install --no-cache-dir jupyter notebook
 RUN pip3 install --upgrade scipy matplotlib pandas
-RUN pip3 install pyvista scikit-fem vedo pythreejs
+RUN pip3 install pyvista vedo pythreejs
 RUN jupyter nbextension enable --py --sys-prefix pythreejs
 RUN pip install ipygany
 RUN jupyter nbextension enable --py --sys-prefix ipygany
