@@ -28,13 +28,12 @@
 # ENTRYPOINT []
 FROM dolfinx/dolfinx:nightly
 
-# Consider using a non-root user from the base image if possible
+# Generate a random UID between 2000 and 9999 (adjust range as needed)
+ARG NB_UID=$(shuf -i 2000-9999 -n 1)
 ARG NB_USER
-ARG NB_UID=2000
 ENV USER ${NB_USER}
 ENV HOME /home/${NB_USER}
 
-# Use a more descriptive comment
 RUN adduser --disabled-password --gecos "Default user" --uid ${NB_UID} ${NB_USER}
 
 WORKDIR ${HOME}
