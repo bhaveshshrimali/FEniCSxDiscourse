@@ -10,18 +10,20 @@ RUN adduser --disabled-password --gecos "Main user" ${NB_USER}
 WORKDIR ${HOME}
 COPY . ${HOME}
 
-# Specify exact version numbers for packages
-RUN pip3 install --no-cache-dir \
-    jupyter-notebook==6.4.12 \
-    scipy==1.10.1 \
-    matplotlib==3.7.1 \
-    pandas==2.0.1 \
-    pyvista==0.38.5 \
-    vedo==2023.4.4 \
-    pythreejs==2.4.2 \
-    jupyter_contrib_nbextensions==0.7.0 \
-    jupyter_nbextensions_configurator==0.6.1 \
-    ipygany==0.5.0
+# Update pip and install packages without specifying versions
+RUN pip3 install --no-cache-dir --upgrade pip && \
+    pip3 install --no-cache-dir \
+    jupyter \
+    notebook \
+    scipy \
+    matplotlib \
+    pandas \
+    pyvista \
+    vedo \
+    pythreejs \
+    jupyter_contrib_nbextensions \
+    jupyter_nbextensions_configurator \
+    ipygany
 
 # Install notebook extensions
 RUN jupyter contrib nbextension install --user
