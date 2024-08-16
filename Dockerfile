@@ -34,7 +34,8 @@ ARG NB_USER
 ENV USER ${NB_USER}
 ENV HOME /home/${NB_USER}
 
-RUN adduser --disabled-password --gecos "Default user" --uid ${NB_UID} ${NB_USER}
+RUN adduser --disabled-password --gecos "Main user" ${NB_USER}
+# RUN adduser --disabled-password --gecos "Default user" --uid ${NB_UID} ${NB_USER}
 
 WORKDIR ${HOME}
 COPY . ${HOME}
