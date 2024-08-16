@@ -1,60 +1,33 @@
-# FROM dolfinx/dolfinx:nightly
-
-# # create user with a home directory
-# ARG NB_USER
-# ARG NB_UID=2000
-# ENV USER ${NB_USER}
-# ENV HOME /home/${NB_USER}
-
-# RUN adduser --disabled-password \
-#     --gecos "Default user" \
-#     --uid ${NB_UID} \
-#     ${NB_USER}
-
-# # Copy home directory for usage in binder
-# WORKDIR ${HOME}
-# COPY . ${HOME}
-# RUN pip3 install --no-cache-dir jupyter notebook
-# RUN pip3 install --upgrade scipy matplotlib pandas
-# RUN pip3 install pyvista vedo pythreejs
-# RUN pip3 install jupyter_contrib_nbextensions jupyter_nbextensions_configurator
-# RUN jupyter contrib nbextension install --user
-# RUN jupyter nbextension enable --py --sys-prefix pythreejs
-# RUN pip3 install ipygany
-# RUN jupyter nbextension enable --py --sys-prefix ipygany
-# USER root
-# RUN chown -R ${NB_UID} ${HOME}
-# USER ${NB_USER}
-# ENTRYPOINT []
 FROM dolfinx/dolfinx:nightly
 
-# Generate a random UID between 2000 and 9999 (adjust range as needed)
 ARG NB_UID=9999
 ARG NB_USER
 ENV USER ${NB_USER}
 ENV HOME /home/${NB_USER}
 
 RUN adduser --disabled-password --gecos "Main user" ${NB_USER}
-# RUN adduser --disabled-password --gecos "Default user" --uid ${NB_UID} ${NB_USER}
 
 WORKDIR ${HOME}
 COPY . ${HOME}
 
-# Use a package manager for system-level dependencies if needed
-# RUN apt-get update && apt-get install -y ...
-
 # Specify exact version numbers for packages
-RUN pip3 install jupyter notebook scipy matplotlib pandas \
-    pyvista vedo pythreejs jupyter_contrib_nbextensions jupyter_nbextensions_configurator ipygany
+RUN pip3 install --no-cache-dir \
+    jupyter-notebook==6.4.12 \
+    scipy==1.10.1 \
+    matplotlib==3.7.1 \
+    pandas==2.0.1 \
+    pyvista==0.38.5 \
+    vedo==2023.4.4 \
+    pythreejs==2.4.2 \
+    jupyter_contrib_nbextensions==0.7.0 \
+    jupyter_nbextensions_configurator==0.6.1 \
+    ipygany==0.5.0
 
 # Install notebook extensions
-RUN jupyter contrib nbextension install
+RUN jupyter contrib nbextension install --user
 RUN jupyter nbextension enable --py --user pythreejs ipygany
-
-# Set correct ownership if necessary
-# RUN chown -R ${NB_UID} ${HOME}
 
 USER ${NB_USER}
 
 # Specify a command to run when the container starts
-ENTRYPOINT ["jupyter", "notebook", "--allow-root"]
+CMD ["jupyter", "notebook", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root"]
