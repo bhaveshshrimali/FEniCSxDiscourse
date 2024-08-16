@@ -1,4 +1,4 @@
-FROM dolfinx/dolfinx:latest
+FROM dolfinx/dolfinx:nightly
 
 # create user with a home directory
 ARG NB_USER
