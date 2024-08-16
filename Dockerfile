@@ -1,26 +1,60 @@
-FROM dolfinx/dolfinx:nightly
+# FROM dolfinx/dolfinx:nightly
 
-# create user with a home directory
-ARG NB_USER
-ARG NB_UID=2000
-ENV USER ${NB_USER}
-ENV HOME /home/${NB_USER}
+# # create user with a home directory
+# ARG NB_USER
+# ARG NB_UID=2000
+# ENV USER ${NB_USER}
+# ENV HOME /home/${NB_USER}
 
 # RUN adduser --disabled-password \
 #     --gecos "Default user" \
 #     --uid ${NB_UID} \
 #     ${NB_USER}
 
-# Copy home directory for usage in binder
+# # Copy home directory for usage in binder
+# WORKDIR ${HOME}
+# COPY . ${HOME}
+# RUN pip3 install --no-cache-dir jupyter notebook
+# RUN pip3 install --upgrade scipy matplotlib pandas
+# RUN pip3 install pyvista vedo pythreejs
+# RUN pip3 install jupyter_contrib_nbextensions jupyter_nbextensions_configurator
+# RUN jupyter contrib nbextension install --user
+# RUN jupyter nbextension enable --py --sys-prefix pythreejs
+# RUN pip3 install ipygany
+# RUN jupyter nbextension enable --py --sys-prefix ipygany
+# USER root
+# RUN chown -R ${NB_UID} ${HOME}
+# USER ${NB_USER}
+# ENTRYPOINT []
+FROM dolfinx/dolfinx:nightly
+
+# Consider using a non-root user from the base image if possible
+ARG NB_USER
+ARG NB_UID=2000
+ENV USER ${NB_USER}
+ENV HOME /home/${NB_USER}
+
+# Use a more descriptive comment
+RUN adduser --disabled-password --gecos "Default user" --uid ${NB_UID} ${NB_USER}
+
 WORKDIR ${HOME}
 COPY . ${HOME}
-RUN pip3 install --no-cache-dir jupyter notebook
-RUN pip3 install --upgrade scipy matplotlib pandas
-RUN pip3 install pyvista vedo pythreejs
-RUN jupyter nbextension enable --py --sys-prefix pythreejs
-RUN pip install ipygany
-RUN jupyter nbextension enable --py --sys-prefix ipygany
-USER root
-RUN chown -R ${NB_UID} ${HOME}
+
+# Use a package manager for system-level dependencies if needed
+# RUN apt-get update && apt-get install -y ...
+
+# Specify exact version numbers for packages
+RUN pip3 install jupyter notebook scipy matplotlib pandas \
+    pyvista vedo pythreejs jupyter_contrib_nbextensions jupyter_nbextensions_configurator ipygany
+
+# Install notebook extensions
+RUN jupyter contrib nbextension install
+RUN jupyter nbextension enable --py --user pythreejs ipygany
+
+# Set correct ownership if necessary
+# RUN chown -R ${NB_UID} ${HOME}
+
 USER ${NB_USER}
-ENTRYPOINT []
+
+# Specify a command to run when the container starts
+ENTRYPOINT ["jupyter", "notebook", "--allow-root"]
