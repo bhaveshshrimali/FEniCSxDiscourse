@@ -10,26 +10,25 @@ RUN adduser --disabled-password --gecos "Main user" ${NB_USER}
 WORKDIR ${HOME}
 COPY . ${HOME}
 
-# Update pip and install packages without specifying versions
+# Update pip and install packages
 RUN pip3 install --no-cache-dir --upgrade pip && \
     pip3 install --no-cache-dir \
-    jupyter \
-    notebook \
+    jupyterlab \
     scipy \
     matplotlib \
     pandas \
     pyvista \
     vedo \
-    pythreejs \
-    jupyter_contrib_nbextensions \
-    jupyter_nbextensions_configurator \
+    ipywidgets \
     ipygany
 
-# Install notebook extensions
-RUN jupyter contrib nbextension install --user
-RUN jupyter nbextension enable --py --user pythreejs ipygany
+# Install JupyterLab extensions
+RUN jupyter labextension install @jupyter-widgets/jupyterlab-manager \
+                                 jupyter-threejs \
+                                 @pyviz/jupyterlab_pyviz \
+                                 @jupyterlab/geojson-extension
 
 USER ${NB_USER}
 
 # Specify a command to run when the container starts
-CMD ["jupyter", "notebook", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root"]
+CMD ["jupyter", "lab", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root"]
