@@ -6,10 +6,10 @@ ARG NB_UID=2000
 ENV USER ${NB_USER}
 ENV HOME /home/${NB_USER}
 
-RUN adduser --disabled-password \
-    --gecos "Default user" \
-    --uid ${NB_UID} \
-    ${NB_USER}
+# RUN adduser --disabled-password \
+#     --gecos "Default user" \
+#     --uid ${NB_UID} \
+#     ${NB_USER}
 
 # Copy home directory for usage in binder
 WORKDIR ${HOME}
