@@ -25,7 +25,7 @@ RUN pip3 install --no-cache-dir --upgrade pip && \
     vedo \
     ipywidgets \
     ipygany \
-    jupyter-threejs \
+    pythreejs \
     pyviz_comms
 
 # Install JupyterLab extensions using pip
