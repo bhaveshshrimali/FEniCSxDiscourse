@@ -10,6 +10,10 @@ RUN adduser --disabled-password --gecos "Main user" ${NB_USER}
 WORKDIR ${HOME}
 COPY . ${HOME}
 
+# Install Node.js and npm
+RUN apt-get update && apt-get install -y nodejs npm && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
 # Update pip and install packages
 RUN pip3 install --no-cache-dir --upgrade pip && \
     pip3 install --no-cache-dir \
@@ -20,13 +24,20 @@ RUN pip3 install --no-cache-dir --upgrade pip && \
     pyvista \
     vedo \
     ipywidgets \
-    ipygany
+    ipygany \
+    jupyter-threejs \
+    pyviz_comms
 
-# Install JupyterLab extensions
-RUN jupyter labextension install @jupyter-widgets/jupyterlab-manager \
-                                 jupyter-threejs \
-                                 @pyviz/jupyterlab_pyviz \
-                                 @jupyterlab/geojson-extension
+# Install JupyterLab extensions using pip
+RUN pip3 install --no-cache-dir \
+    jupyterlab-pyviz \
+    jupyterlab-geojson
+
+# Enable extensions
+RUN jupyter labextension enable @jupyter-widgets/jupyterlab-manager \
+                               jupyter-threejs \
+                               @pyviz/jupyterlab_pyviz \
+                               @jupyterlab/geojson-extension
 
 USER ${NB_USER}
 
