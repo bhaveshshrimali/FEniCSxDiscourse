@@ -35,9 +35,9 @@ RUN pip3 install --no-cache-dir \
 
 # Enable extensions
 RUN jupyter labextension enable @jupyter-widgets/jupyterlab-manager \
-                               jupyter-threejs \
                                @pyviz/jupyterlab_pyviz \
                                @jupyterlab/geojson-extension
+RUN jupyter labextension enable --py --sys-prefix pythreejs
 
 USER ${NB_USER}
 
