@@ -2,7 +2,7 @@ FROM dolfinx/dolfinx:nightly
 
 # create user with a home directory
 ARG NB_USER
-ARG NB_UID=1000
+ARG NB_UID=2000
 ENV USER ${NB_USER}
 ENV HOME /home/${NB_USER}
 
