@@ -29,7 +29,7 @@
 FROM dolfinx/dolfinx:nightly
 
 # Generate a random UID between 2000 and 9999 (adjust range as needed)
-ARG NB_UID=$(shuf -i 9000-9999 -n 1)
+ARG NB_UID=9999
 ARG NB_USER
 ENV USER ${NB_USER}
 ENV HOME /home/${NB_USER}
