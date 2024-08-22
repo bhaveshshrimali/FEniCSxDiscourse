@@ -31,4 +31,4 @@ USER ${NB_USER}
 ENTRYPOINT []
 
 # Specify a command to run when the container starts
-CMD ["jupyter", "lab", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root"]
+# CMD ["jupyter", "lab", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root"]
