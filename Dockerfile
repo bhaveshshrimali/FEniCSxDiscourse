@@ -18,26 +18,15 @@ RUN apt-get update && apt-get install -y nodejs npm && \
 RUN pip3 install --no-cache-dir --upgrade pip && \
     pip3 install --no-cache-dir \
     jupyterlab \
+    jupyter \
+    notebook
     scipy \
     matplotlib \
     pandas \
-    pyvista \
-    vedo \
+    pyvista[all] \
     ipywidgets \
-    ipygany \
-    pythreejs \
-    pyviz_comms
+    ipykernel
 
-# Install JupyterLab extensions using pip
-RUN pip3 install --no-cache-dir \
-    jupyterlab-pyviz \
-    jupyterlab-geojson
-
-# Enable extensions
-RUN jupyter labextension enable @jupyter-widgets/jupyterlab-manager \
-                               @pyviz/jupyterlab_pyviz \
-                               @jupyterlab/geojson-extension
-RUN jupyter labextension enable --py --sys-prefix pythreejs
 
 USER ${NB_USER}
 
