@@ -31,7 +31,7 @@ FROM dolfinx/dolfinx:nightly
 # ENTRYPOINT []
 # create user with a home directory
 ARG NB_USER=jovyan
-ARG NB_UID=1000
+ARG NB_UID=9993
 RUN useradd -m ${NB_USER} -u ${NB_UID}
 ENV HOME /home/${NB_USER}
 
